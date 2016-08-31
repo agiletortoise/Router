@@ -10,4 +10,8 @@ This is a sample application demonstrating a technique for abstracting routing o
 
 This project was built with Swift 3 on Xcode 8 beta 6 and is not intended for reuse, or meant to be complete, it's just a demostration put out there to solicit feedback on this method.
 
+The Router object should be created in the AppDelegate, and assigned a router delegate early in the app lifecycle.
+
+The AppDelegate passes off NSUserActivity(s), UIApplicationShortcutItem(s) and URLs to the router, which handles translating them into a generic RouterRequest struct and asking the router delegate to handle the actual command.  In the case of x-callback-url requests the callback URLs are parsed and included with the RouterRequest to be called when appropriate by the router delegate.
+
 It was made by @agiletortoise.  If you have comments, please let me know.
