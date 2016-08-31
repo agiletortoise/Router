@@ -11,12 +11,21 @@ import UIKit
 extension ViewController: RouterDelegate {
 
     func route(routerRequest: RouterRequest, router: Router) {
+        // do the actual work required by the command
+        
         switch routerRequest.requestType {
         case .open:
             let identifier = routerRequest.requestInfo["identifier"]
             let alert = UIAlertController(title: "Open", message: "Open action triggered for identifier: \(identifier!)", preferredStyle: .alert)
             
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+                // action cancelled, call cancel callback
+                routerRequest.cancelCallback?([:])
+            }))
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler:{ (action) in
+                // action completed, call success callback
+                routerRequest.successCallback?([:])
+            }))
             
             present(alert, animated: true, completion: nil)
             break
@@ -24,7 +33,14 @@ extension ViewController: RouterDelegate {
             let query = routerRequest.requestInfo["query"]
             let alert = UIAlertController(title: "Search", message: "Search action triggered for query: \(query!)", preferredStyle: .alert)
             
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+                // action cancelled, call cancel callback
+                routerRequest.cancelCallback?([:])
+            }))
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler:{ (action) in
+                // action completed, call success callback
+                routerRequest.successCallback?([:])
+            }))
             
             present(alert, animated: true, completion: nil)
             break

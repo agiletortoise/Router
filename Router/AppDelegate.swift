@@ -18,8 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         let viewController = window?.rootViewController as! ViewController
+        // assign router delegate, which will handle the parse router requests
         router.delegate = viewController
         
+        // check for and handle shortcut item if needed
         performShortcutItem = true
         if let shortcutItem = launchOptions?[UIApplicationLaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
             handleShortcutItem(shortcutItem, completionHandler: nil)
@@ -32,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //MARK: URLs
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        // pass URL to router to be handled
         return router.route(url: url, options: options)
     }
     
@@ -44,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem, completionHandler: ((Bool) -> Void)?) {
+        // pass shortcut item to router to be handled
         router.route(shortcutItem: shortcutItem) { (success) in
             completionHandler?(success)
         }
@@ -52,6 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //MARK: NSUserActivity
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Swift.Void) -> Bool {
+        // pass NSUserActivity to router to handle
         router.route(userActivity: userActivity) { (success) in
             // do nothing - or call restoration handler if necessary
         }
